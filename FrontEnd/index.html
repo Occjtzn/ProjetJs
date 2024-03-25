@@ -8,7 +8,7 @@
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans&display=swap" rel="stylesheet">
 	<meta name="description" content="">
-	<link rel="stylesheet" href="./assets/style.css">
+	<link rel="stylesheet" type="text/css" href="./assets/style.css">
 	<script src="./assets/js/categories.js" type="text/javascript" defer></script>
 
 </head>
@@ -40,14 +40,13 @@
 		<h2>Mes Projets</h2>
 		<div id="categories">
 			<section class="filtres">
-				<h3>Filtres</h3>
-				<button class="btn-objet">Objets</button>
+				<button class="btn-filter" data-category="all">Tous</button>
 				<br>
-				<button class="btn-appartements">Appartements</button>
+				<button class="btn-filter" data-category="Objets">Objets</button>
 				<br>
-				<button class="btn-hotels">Hotels & restaurants</button>
+				<button class="btn-filter" data-category="Appartements">Appartements</button>
 				<br>
-				<button class="btn-all">Tout afficher</button>
+				<button class="btn-filter" data-category="Hotels & restaurants">Hotels & restaurants</button>
 			</section>	
 		</div>
 		<div id="gallery">

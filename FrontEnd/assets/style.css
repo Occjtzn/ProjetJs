@@ -30,6 +30,7 @@ footer, header, hgroup, menu, nav, section {
 }
 body {
 	line-height: 1;
+	background-color: #fffef8;
 }
 ol, ul {
 	list-style: none;
@@ -52,6 +53,7 @@ body {
 	margin:auto;
 	font-family: 'Work Sans' ;
 	font-size: 14px;
+	background-color: #FFFEF8;
 }
 header {
 	display: flex;
@@ -125,6 +127,38 @@ li:hover {
 	text-align: center;
 	margin-bottom: 1em;
 }
+#categories {
+	display: flex;
+	align-items: center;
+}
+
+.filtres {
+	display: flex;
+	margin: 0 auto 50px;
+}
+.filtres .btn-filter {
+
+    display: flex;
+    height: 40px;
+    padding: 9px 30px;
+    margin-right: 10px;
+    align-items: center;
+    border-radius: 25px;
+    border: 2px solid var(--Grey-Tint2, #1d6154);
+	background-color: #FFFEF8;
+	color: #1D6154;
+	text-align: center;
+	font-family: Syne;
+	font-size: 16px;
+	font-style: normal;
+	font-weight: 700;
+	line-height: normal;
+}
+.filtres .btn-filter:hover {
+	color: #FFFEF8;
+	background-color: #1D6154;
+}
+
 .gallery {
 	width: 100%;
 	display: grid;
