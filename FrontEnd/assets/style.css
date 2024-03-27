@@ -154,12 +154,12 @@ li:hover {
 	font-weight: 700;
 	line-height: normal;
 }
-.filtres .btn-filter:hover {
+.filtres .btn-filter:hover , .filtres .btn-filter.active {
 	color: #FFFEF8;
 	background-color: #1D6154;
 }
 
-.gallery {
+#gallery {
 	width: 100%;
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr;
@@ -167,10 +167,11 @@ li:hover {
 	grid-row-gap: 20px;
 }
 
-.gallery img {
+#gallery img {
 	width: 100%;
 
 }
+
 #contact {
 	width: 50%;
 margin: auto;

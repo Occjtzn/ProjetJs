@@ -10,12 +10,14 @@ document.addEventListener("DOMContentLoaded", function() {
         .then((result) => {
             worksContainer.innerHTML = ''; 
             for(let work of result) {
+                let figure = document.createElement('figure')
                 let image = new Image();
                 let nom = document.createElement('figcaption');
                 nom.textContent = work.title;
                 image.src = work.imageUrl;
-                worksContainer.appendChild(image);
-                worksContainer.appendChild(nom);
+                figure.appendChild(image);
+                figure.appendChild(nom);
+                worksContainer.appendChild(figure)
             }
         });
     }
@@ -31,12 +33,14 @@ document.addEventListener("DOMContentLoaded", function() {
             worksContainer.innerHTML = ''; 
             for(let work of result) {
                 if (work.category.name === category || category === "all") {
+                    let figure = document.createElement('figure')
                     let image = new Image();
                     let nom = document.createElement('figcaption');
                     nom.textContent = work.title;
                     image.src = work.imageUrl;
-                    worksContainer.appendChild(image);
-                    worksContainer.appendChild(nom);
+                    figure.appendChild(image);
+                    figure.appendChild(nom);
+                    worksContainer.appendChild(figure)
                 }
             }
         });
@@ -44,6 +48,10 @@ document.addEventListener("DOMContentLoaded", function() {
     
     filterButtons.forEach(button => {
         button.addEventListener("click", function () {
+            filterButtons.forEach(oldButton => {
+                oldButton.classList.remove('active')
+            });
+            button.classList.add('active')
             const category = button.dataset.category;
             filterWorksByCategory(category);
         });
