@@ -55,13 +55,24 @@ body {
 	font-size: 14px;
 	background-color: #FFFEF8;
 }
-header {
+#main-header {
 	display: flex;
 	justify-content: space-between;
 	margin: 50px 0
 }
-section {
-	margin: 50px 0
+
+#edit-mode-header {
+    background-color: black;
+    color: white;
+    padding: 10px;
+    display: none;
+    width: 100%;
+	margin: auto;
+}
+
+.edit-mode-banner svg {
+	color: white;
+	background-color: white;
 }
 
 h1{
