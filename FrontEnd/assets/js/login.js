@@ -14,7 +14,21 @@ document.addEventListener("DOMContentLoaded", function() {
             },
             body: JSON.stringify({ email: email, password: password })
         })
-        .then(response => response.json())
+        .then(response => {
+
+            if (!response.ok) {
+                console.log(response)
+                if (response.status === 401) {
+                        alert('Vos identifiants sont erronés');
+                    } else if (response.status === 404) {
+                        alert("L'ulilisateur n'existe pas");
+                    }
+            }
+            
+            return response.json();
+
+        })
+
         .then(data => {
 
             if (data.token && data.userId)  {
@@ -22,16 +36,14 @@ document.addEventListener("DOMContentLoaded", function() {
                 localStorage.setItem("userId", data.userId)
 
                 window.location.href = "./index.html"
-            }
-            
+        }
         
         })
         .catch(error => {
-            
-            console.log(error)
-
-            alert('Erreur de connexion');
-            console.error('Erreur lors de la connexion :', error);
+            if (error.response) {
+                    alert('Erreur de connexion');
+                    console.error('Erreur lors de la connexion :', error);
+            }
         });
     });
 });

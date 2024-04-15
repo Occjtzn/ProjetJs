@@ -1,9 +1,12 @@
 document.addEventListener("DOMContentLoaded", function() {
-    const loginButton = document.getElementById('login-button');
-    const logoutButton = document.getElementById('logout-button');
-    const logoutLink = document.getElementById('logout-link');
-    const filtersSection = document.getElementById('filters');
-    const modifyButton = document.getElementById('modify-button');
+    const headerContainer = document.getElementById('nav-bar');
+    const portfolioContainer = document.getElementById('portfolio');
+    const list = document.createElement('li');
+    const instaLogo = document.createElement('li');
+    const logoutLink = document.createElement('a');
+    const loginLink = document.createElement('a');
+    const imageSocial = document.createElement('img');
+    const modifyButton = document.createElement('button');
     const editModeHeader = document.getElementById('edit-mode-header');
 
     logoutLink.addEventListener('click', function(event) {
@@ -12,25 +15,40 @@ document.addEventListener("DOMContentLoaded", function() {
         window.location.href = "./index.html";
     });
 
-    modifyButton.addEventListener('click', function(event) {
-        window.location.href = "./modify_projects.html";
+    loginLink.addEventListener('click', function(event) {
+        event.preventDefault();
+        window.location.href = "./login.html";
     });
 
     function checkLoggedIn() {
         const token = localStorage.getItem('token');
         if (token) {
-            loginButton.style.display = 'none';
-            logoutButton.style.display = 'block';
-            filtersSection.style.display = 'none';
-            modifyButton.style.display = 'block';
+            list.setAttribute("id", "logout-button");
+            modifyButton.setAttribute("id", "modify-button")
+            modifyButton.textContent += 'Modifier';
+            portfolioContainer.appendChild(modifyButton);
+            logoutLink.setAttribute("id", "logout-link");
+            logoutLink.textContent += 'Logout';
+            list.appendChild(logoutLink);
             editModeHeader.style.display = 'flex';
+            headerContainer.appendChild(list);
+            const filters = document.getElementById('filters');
+            if (filters) {
+                filters.remove();
+            }
         } else {
-            loginButton.style.display = 'block';
-            logoutButton.style.display = 'none';
-            filtersSection.style.display = 'block';
-            modifyButton.style.display = 'none';
-            editModeHeader.style.display = 'none';
+            list.setAttribute("id", "login-button");
+            loginLink.textContent += 'Login';
+                if (window.location.pathname === "/FrontEnd/login.html") {
+                    loginLink.style.fontWeight = "bold";
+                }
+            list.appendChild(loginLink);
+            headerContainer.append(list);
         }
+        imageSocial.setAttribute("src", "./assets/icons/instagram.png");
+        imageSocial.setAttribute("alt", "Instagram");
+        instaLogo.appendChild(imageSocial);
+        headerContainer.appendChild(instaLogo);
     }
 
     checkLoggedIn();
