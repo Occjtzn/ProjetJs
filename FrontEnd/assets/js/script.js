@@ -8,6 +8,9 @@ document.addEventListener("DOMContentLoaded", function() {
     const imageSocial = document.createElement('img');
     const modifyButton = document.createElement('button');
     const editModeHeader = document.getElementById('edit-mode-header');
+    const worksModalContainer = document.getElementById('gallery-modal');
+
+    // TOKEN IMPLEMENTATION
 
     logoutLink.addEventListener('click', function(event) {
         event.preventDefault();
@@ -51,5 +54,63 @@ document.addEventListener("DOMContentLoaded", function() {
         headerContainer.appendChild(instaLogo);
     }
 
+    
+
     checkLoggedIn();
+
+    // MODAL IMPLEMENTATION
+
+    var modal = document.getElementById("myModal");
+    var modalPhoto = document.getElementById("myModalPhoto");
+    var btn = document.getElementById("modify-button");
+    var btnAddPhoto = document.getElementById("add-photo");
+    var span = document.getElementsByClassName("close")[0];
+    var spanPhoto = document.getElementsByClassName("closePhoto")[0];
+
+    function displayModal(worksModalContainer) {
+      fetch('http://localhost:5678/api/works', {
+          method: 'GET'
+      })
+      .then((response) => response.json())
+      .then((result) => {
+        worksModalContainer.innerHTML = ''; 
+              for(let work of result) {
+                  let figure = document.createElement('figure');
+                  figure.className = "modal-figure";
+                  let image = new Image();
+                  let nom = document.createElement('figcaption');
+                  nom.className = "modal-figcaption";
+                  nom.textContent = work.title;
+                  image.src = work.imageUrl;
+                  figure.appendChild(image);
+                  worksModalContainer.appendChild(figure);
+
+                  console.log(result)
+          }
+      });
+    }
+
+    btn.onclick = function() {
+      modal.style.display = "block";
+      displayModal(worksModalContainer);
+    }
+    
+    btnAddPhoto.onclick = function() {
+        modal.style.display = "none";
+        modalPhoto.style.display = "block";
+       
+      }
+    span.onclick = function() {
+      modal.style.display = "none";
+    }
+    
+    spanPhoto.onclick = function() {
+        modalPhoto.style.display = "none";
+      }
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    }
+
 });
