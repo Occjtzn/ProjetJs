@@ -51,7 +51,9 @@
 		</article>
 	</section>
 	<section id="portfolio">
-		<h2>Mes Projets</h2>
+		<div id="portfolio-title">
+			<h2>Mes Projets</h2>
+		</div>
 		<div id="categories">
 			<section id="filters" class="filtres">
 				<button class="btn-filter" data-category="all">Tous</button>
@@ -86,11 +88,10 @@
 		<div class="modal-content">
 			<span class="close">&times;</span>
 
-			<div class="modal-title"><h1>test</h1></div>
+			<div class="modal-title"><h1>Galerie photo</h1></div>
 
-			<div id="gallery-modal">
-			</div>
-
+			<div id="gallery-modal"></div>
+			<div class="trait"></div>
 			<div class="modal-button">
 				<button id="add-photo">Ajouter une photo</button>
 			</div>
@@ -101,10 +102,23 @@
 
 	  <div id="myModalPhoto" class="modal">
 		<div class="modal-content">
-			<span class="closePhoto">&times;</span>
-			<h1>ajouter une photo</h1>
+			<span class="close">&times;</span>
+			<span class="back-arrow">&lt;</span>
 
-		
+			<div class="modal-title"><h1>Ajout photo</h1></div>
+			<form id="uploadForm">
+				<input type="file" id="photoInput" accept="image/*" required>
+				<input type="text" id="imageName" placeholder="Nom de l'image" required>
+				<select id="categorySelect" required>
+					<option value="" selected>Choisissez une catégorie</option>
+				</select>
+				<button type="submit" id="validation-photo">+ Ajouter une photo</button>
+				<p>jpg, png : 4mo max</p>
+			</form>
+			<div class="trait"></div>
+			<div class="modal-button">
+				<button id="validation-photo">Valider</button>
+			</div>
 		 
 		</div>
 	  </div>

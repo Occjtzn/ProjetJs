@@ -23,6 +23,8 @@ document.addEventListener("DOMContentLoaded", function() {
                     figure.appendChild(nom);
                     container.appendChild(figure)
             }
+
+            console.log(result)
         });
     }
 
