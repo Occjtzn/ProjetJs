@@ -106,13 +106,16 @@
 			<span class="back-arrow">&lt;</span>
 
 			<div class="modal-title"><h1>Ajout photo</h1></div>
+			<div id="affichage-photo">
+				
+			</div>
 			<form id="uploadForm">
-				<input type="file" id="photoInput" accept="image/*" required>
+				<input type="file" id="photo-input" accept="image/*" required>
 				<input type="text" id="imageName" placeholder="Nom de l'image" required>
 				<select id="categorySelect" required>
 					<option value="" selected>Choisissez une catégorie</option>
 				</select>
-				<button type="submit" id="validation-photo">+ Ajouter une photo</button>
+				<button id="upload-photo">+ Ajouter une photo</button>
 				<p>jpg, png : 4mo max</p>
 			</form>
 			<div class="trait"></div>

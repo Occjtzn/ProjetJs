@@ -9,6 +9,9 @@ document.addEventListener("DOMContentLoaded", function() {
     const modifyButton = document.createElement('button');
     const editModeHeader = document.getElementById('edit-mode-header');
     const worksModalContainer = document.getElementById('gallery-modal');
+    const uploadImage = document.createElement('img');
+    const affichagePhoto = document.getElementById('affichage-photo')
+
 
     logoutLink.addEventListener('click', function(event) {
         event.preventDefault();
@@ -72,6 +75,7 @@ document.addEventListener("DOMContentLoaded", function() {
     var btnAddPhoto = document.getElementById("add-photo");
     var closeButtons = document.querySelectorAll('.modal .close');
     var backArrow = document.querySelector('.back-arrow');
+    var uploadPhoto = document.getElementById("upload-photo");
 
     closeButtons.forEach(function(button) {
         button.onclick = function() {
@@ -138,6 +142,18 @@ document.addEventListener("DOMContentLoaded", function() {
         .catch(error => {
             console.error('Erreur lors de la récupération des catégories :', error);
         });
+    }
+
+    affichagePhoto.appendChild(uploadImage)
+    uploadImage.display = "none"
+    uploadPhoto.onclick = function(event) {
+        var photoInput = document.getElementById ("photo-input");
+        photoInput.onchange = function(event) {
+            console.log(event.target.files);
+            uploadImage.src = URL.createObjectURL(event.target.files[0]);
+            uploadImage.display = "block";
+        }
+        photoInput.click ();
     }
 
     window.onclick = function(event) {
