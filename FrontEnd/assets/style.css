@@ -454,6 +454,11 @@ footer nav ul {
 	text-decoration: none;
 	cursor: pointer;
 }
+#uploadForm {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+}
 
 #validation-photo {
 	border-radius: 60px;
@@ -473,3 +478,5 @@ footer nav ul {
 #photo-input{
 	display: none;
 }
+
+

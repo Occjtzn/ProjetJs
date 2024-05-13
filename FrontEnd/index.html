@@ -109,20 +109,22 @@
 			<div id="affichage-photo">
 				
 			</div>
-			<form id="uploadForm">
-				<input type="file" id="photo-input" accept="image/*" required>
-				<input type="text" id="imageName" placeholder="Nom de l'image" required>
+			<form id="uploadForm" action="#" method="post">
+				<div class="upload-container">
+					<div id="affichage-photo"></div>
+					<button id="upload-photo">+ Ajouter une photo</button>
+					<p>jpg, png : 4mo max</p>
+				</div>
+				<label for="imageName">Nom de l'image</label>
+				<input type="text" id="imageName" required>
+				<label for="categorySelect">Choisissez une catégorie</label>
 				<select id="categorySelect" required>
 					<option value="" selected>Choisissez une catégorie</option>
 				</select>
-				<button id="upload-photo">+ Ajouter une photo</button>
-				<p>jpg, png : 4mo max</p>
-			</form>
-			<div class="trait"></div>
-			<div class="modal-button">
+				<input type="file" id="photo-input" accept="image/*">
+				<div class="trait"></div>
 				<button id="validation-photo">Valider</button>
-			</div>
-		 
+			</form>		 
 		</div>
 	  </div>
 	  

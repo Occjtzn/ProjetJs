@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", function() {
+    // Récupération des éléments du DOM
     const headerContainer = document.getElementById('nav-bar');
     const portfolioContainer = document.getElementById('portfolio-title');
     const list = document.createElement('li');
@@ -10,23 +11,26 @@ document.addEventListener("DOMContentLoaded", function() {
     const editModeHeader = document.getElementById('edit-mode-header');
     const worksModalContainer = document.getElementById('gallery-modal');
     const uploadImage = document.createElement('img');
-    const affichagePhoto = document.getElementById('affichage-photo')
+    const affichagePhoto = document.getElementById('affichage-photo');
 
-
+    // Définition de la fonction de déconnexion
     logoutLink.addEventListener('click', function(event) {
         event.preventDefault();
         localStorage.removeItem('token');
         window.location.href = "./index.html";
     });
 
+    // Définition de la fonction de connexion
     loginLink.addEventListener('click', function(event) {
         event.preventDefault();
         window.location.href = "./login.html";
     });
 
+    // Fonction pour vérifier si l'utilisateur est connecté
     function checkLoggedIn() {
         const token = localStorage.getItem('token');
         if (token) {
+            // Si l'utilisateur est connecté
             list.setAttribute("id", "logout-button");
             modifyButton.setAttribute("id", "modify-button");
             modifyButton.textContent += 'modifier';
@@ -52,6 +56,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 filters.remove();
             }
         } else {
+            // Si l'utilisateur n'est pas connecté
             list.setAttribute("id", "login-button");
             loginLink.textContent += 'Login';
             if (window.location.pathname === "/FrontEnd/login.html") {
@@ -67,8 +72,10 @@ document.addEventListener("DOMContentLoaded", function() {
         headerContainer.appendChild(instaLogo);
     }
 
+    // Appel de la fonction pour vérifier si l'utilisateur est connecté
     checkLoggedIn();
 
+    // Récupération des éléments de la modal
     var modal = document.getElementById("myModal");
     var modalPhoto = document.getElementById("myModalPhoto");
     var btn = document.getElementById("modify-button");
@@ -77,12 +84,14 @@ document.addEventListener("DOMContentLoaded", function() {
     var backArrow = document.querySelector('.back-arrow');
     var uploadPhoto = document.getElementById("upload-photo");
 
+    // Ajout des écouteurs pour les boutons de fermeture de la modal
     closeButtons.forEach(function(button) {
         button.onclick = function() {
             this.parentElement.parentElement.style.display = "none";
         };
     });
 
+    // Fonction pour afficher les photos dans la modal
     function displayModal(worksModalContainer) {
         fetch('http://localhost:5678/api/works', {
             method: 'GET'
@@ -104,20 +113,24 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
+    // Ajout d'un écouteur pour le clic sur la flèche de retour
     backArrow.addEventListener('click', function() {
         modal.style.display = "block";
         modalPhoto.style.display = "none";
     });
 
+    // Ajout d'un écouteur pour le clic sur le bouton de modification
     btn.onclick = function() {
         modal.style.display = "block";
         displayModal(worksModalContainer);
     }
     
+    // Ajout d'un écouteur pour le clic sur le bouton d'ajout de photo
     btnAddPhoto.onclick = function() {
         modal.style.display = "none";
         modalPhoto.style.display = "block";  
 
+        // Récupération des catégories depuis l'API
         fetch('http://localhost:5678/api/categories', {
             method: 'GET',
             headers: {
@@ -144,18 +157,24 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
+    // Ajout de l'image pour l'affichage de la photo
     affichagePhoto.appendChild(uploadImage)
     uploadImage.display = "none"
+
+    // Ajout d'un écouteur pour le clic sur le bouton d'upload de photo
     uploadPhoto.onclick = function(event) {
         var photoInput = document.getElementById ("photo-input");
         photoInput.onchange = function(event) {
-            console.log(event.target.files);
             uploadImage.src = URL.createObjectURL(event.target.files[0]);
+            const file = event.target.files[0]
+            const reader = new FileReader()
+            reader.readAsArrayBuffer(file)
             uploadImage.display = "block";
         }
         photoInput.click ();
     }
 
+    // Ajout d'un écouteur pour le clic en dehors de la modal
     window.onclick = function(event) {
         if (event.target == modal) {
             modal.style.display = "none";
