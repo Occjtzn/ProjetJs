@@ -1,3 +1,4 @@
+// Attend que le DOM soit entièrement chargé avant d'exécuter le script
 document.addEventListener("DOMContentLoaded", function() {
     // Récupération des éléments du DOM
     const headerContainer = document.getElementById('nav-bar');
@@ -163,15 +164,48 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Ajout d'un écouteur pour le clic sur le bouton d'upload de photo
     uploadPhoto.onclick = function(event) {
-        var photoInput = document.getElementById ("photo-input");
+        var photoInput = document.getElementById("photo-input");
         photoInput.onchange = function(event) {
-            uploadImage.src = URL.createObjectURL(event.target.files[0]);
-            const file = event.target.files[0]
-            const reader = new FileReader()
-            reader.readAsArrayBuffer(file)
-            uploadImage.display = "block";
-        }
-        photoInput.click ();
+            const file = event.target.files[0];
+            const reader = new FileReader();
+            
+            reader.onload = function(event) {
+                // Une fois que le fichier est chargé avec succès, envoyer la photo
+                const photoData = event.target.result;
+                console.log(photoData)
+                var token = localStorage.getItem("token")
+                // Maintenant vous pouvez effectuer votre appel fetch pour envoyer la photo
+                fetch('http://localhost:5678/api/works', {
+                    method: 'POST', headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'multipart/form-data',
+                        'Authorization': 'Bearer ' + token,
+                      },
+                    body: `image=${photoData}&title=test&category=1`
+                })
+                .then(response => {
+                    // Gérer la réponse de l'API
+                    if (response.ok) {
+                        // La requête a réussi, vous pouvez traiter la réponse ici
+                    } else {
+                        // La requête a échoué, gérer l'erreur ici
+                        throw new Error('Échec de la requête POST');
+                    }
+                })
+                .catch(error => {
+                    // Gérer les erreurs
+                    console.error('Erreur lors de l\'envoi de la photo:', error);
+                });
+            };
+
+            // Lit le contenu du fichier en tant qu'ArrayBuffer
+            reader.readAsText(file);
+            
+            // Affiche l'image
+            uploadImage.src = URL.createObjectURL(file);
+            uploadImage.style.display = "block"; // Modifie le style pour afficher l'image
+        };
+        photoInput.click();
     }
 
     // Ajout d'un écouteur pour le clic en dehors de la modal
