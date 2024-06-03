@@ -14,27 +14,31 @@ document.addEventListener("DOMContentLoaded", function() {
     const uploadImage = document.createElement('img');
     const affichagePhoto = document.getElementById('affichage-photo');
     const submitPhoto = document.getElementById('validation-photo');
+    const rectangleUpload = document.getElementById('rectangle-upload');
+    const svgPhoto = document.getElementById('svg-photo');
+    const validationPhoto = document.getElementById('validation-photo');
 
-    // Définition de la fonction de déconnexion
+    // Fonction de déconnexion
     logoutLink.addEventListener('click', function(event) {
         event.preventDefault();
         localStorage.removeItem('token');
         window.location.href = "./index.html";
     });
 
-    // Définition de la fonction de connexion
+    // Fonction de connexion
     loginLink.addEventListener('click', function(event) {
         event.preventDefault();
         window.location.href = "./login.html";
     });
-    // Fonction pour vérifier si l'utilisateur est connecté
+
+    // Vérifie si l'utilisateur est connecté
     function checkLoggedIn() {
         const token = localStorage.getItem('token');
         if (token) {
-            // Si l'utilisateur est connecté
+            // Si connecté
             list.setAttribute("id", "logout-button");
             modifyButton.setAttribute("id", "modify-button");
-            modifyButton.textContent += 'modifier';
+            modifyButton.textContent += 'Modifier';
             const svgIcon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
             svgIcon.setAttribute("xmlns", "http://www.w3.org/2000/svg");
             svgIcon.setAttribute("width", "16");
@@ -57,14 +61,14 @@ document.addEventListener("DOMContentLoaded", function() {
                 filters.remove();
             }
         } else {
-            // Si l'utilisateur n'est pas connecté
+            // Si déconnecté
             list.setAttribute("id", "login-button");
             loginLink.textContent += 'Login';
             if (window.location.pathname === "/FrontEnd/login.html") {
                 loginLink.style.fontWeight = "bold";
             }
             list.appendChild(loginLink);
-            headerContainer.append(list);
+            headerContainer.appendChild(list);
         }
         instaLogo.setAttribute("id", "insta-logo");
         imageSocial.setAttribute("src", "./assets/icons/instagram.png");
@@ -152,7 +156,7 @@ document.addEventListener("DOMContentLoaded", function() {
         })
         .then(response => {
             if (response.ok) {
-                // Si la suppression est réussie, rafraîchissez la modal pour refléter les changements
+                // Si la suppression est réussie, rafraîchir la modal pour refléter les changements
                 displayModal(worksModalContainer);
             } else {
                 throw new Error('Failed to delete image');
@@ -162,7 +166,6 @@ document.addEventListener("DOMContentLoaded", function() {
             console.error('Error deleting image:', error);
         });
     }
-
 
     // Ajout d'un écouteur pour le clic sur la flèche de retour
     backArrow.addEventListener('click', function() {
@@ -175,7 +178,7 @@ document.addEventListener("DOMContentLoaded", function() {
         modal.style.display = "block";
         displayModal(worksModalContainer);
     }
-    
+
     // Ajout d'un écouteur pour le clic sur le bouton d'ajout de photo
     btnAddPhoto.onclick = function() {
         modal.style.display = "none";
@@ -194,7 +197,6 @@ document.addEventListener("DOMContentLoaded", function() {
             categorySelect.innerHTML = '';
             var defaultOption = document.createElement('option');
             defaultOption.value = "";
-            defaultOption.textContent = "Choisissez une catégorie";
             categorySelect.appendChild(defaultOption);
             categories.forEach(category => {
                 var option = document.createElement('option');
@@ -208,18 +210,26 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    // Ajout de l'image pour l'affichage de la photo
-    affichagePhoto.appendChild(uploadImage)
-    uploadImage.display = "none"
-
+    function changeButtonClass() {
+        validationPhoto.classList.remove('btn-grey');
+        validationPhoto.classList.add('btn-green');
+        validationPhoto.disabled = false;
+    }
     // Ajout d'un écouteur pour le clic sur le bouton d'upload de photo
     uploadPhoto.onclick = function(event) {
         var photoInput = document.getElementById("photo-input");
         photoInput.onchange = function(event) {            
             // Affiche l'image
+            affichagePhoto.appendChild(uploadImage)
             uploadImage.src = URL.createObjectURL(event.target.files[0]);
             uploadImage.style.display = "block"; // Modifie le style pour afficher l'image
+            svgPhoto.style.display = "none";
+            rectangleUpload.style.display = "none";
+
+            changeButtonClass();
+
         };
+        
         photoInput.click();
     }
 
@@ -231,7 +241,6 @@ document.addEventListener("DOMContentLoaded", function() {
         // Une fois que le fichier est chargé avec succès, envoyer la photo
         var token = localStorage.getItem("token");
         const formData = new FormData();
-        console.log(file.name);
         formData.append('image', file);
         formData.append('title', title); 
         formData.append('category', category); 
