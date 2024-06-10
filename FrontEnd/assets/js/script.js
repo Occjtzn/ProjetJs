@@ -1,5 +1,5 @@
 // Attend que le DOM soit entièrement chargé avant d'exécuter le script
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     // Récupération des éléments du DOM
     const headerContainer = document.getElementById('nav-bar');
     const portfolioContainer = document.getElementById('portfolio-title');
@@ -19,14 +19,14 @@ document.addEventListener("DOMContentLoaded", function() {
     const validationPhoto = document.getElementById('validation-photo');
 
     // Fonction de déconnexion
-    logoutLink.addEventListener('click', function(event) {
+    logoutLink.addEventListener('click', function (event) {
         event.preventDefault();
         localStorage.removeItem('token');
         window.location.href = "./index.html";
     });
 
     // Fonction de connexion
-    loginLink.addEventListener('click', function(event) {
+    loginLink.addEventListener('click', function (event) {
         event.preventDefault();
         window.location.href = "./login.html";
     });
@@ -85,68 +85,70 @@ document.addEventListener("DOMContentLoaded", function() {
     var modalPhoto = document.getElementById("myModalPhoto");
     var btn = document.getElementById("modify-button");
     var btnAddPhoto = document.getElementById("add-photo");
-    var closeButtons = document.querySelectorAll('.modal .close');
+    var closeModal = document.getElementById("close-modal");
+    var closeModalPhoto = document.getElementById("close-modalPhoto");
     var backArrow = document.querySelector('.back-arrow');
     var uploadPhoto = document.getElementById("upload-photo");
 
     // Ajout des écouteurs pour les boutons de fermeture de la modal
-    closeButtons.forEach(function(button) {
-        button.onclick = function() {
-            this.parentElement.parentElement.style.display = "none";
-        };
-    });
+    closeModal.onclick = function () {
+        this.parentElement.parentElement.style.display = "none";
+        window.location.reload()
+    };
+    closeModalPhoto.onclick = function () {
+        this.parentElement.parentElement.style.display = "none";
+        window.location.reload()
+    };
 
     // Fonction pour afficher les photos dans la modal
     function displayModal(worksModalContainer) {
         fetch('http://localhost:5678/api/works', {
             method: 'GET'
         })
-        .then((response) => response.json())
-        .then((result) => {
-            worksModalContainer.innerHTML = ''; 
-            for(let work of result) {
-                let figure = document.createElement('figure');
-                figure.className = "modal-figure";
+            .then((response) => response.json())
+            .then((result) => {
+                worksModalContainer.innerHTML = '';
+                for (let work of result) {
+                    let figure = document.createElement('figure');
+                    figure.className = "modal-figure";
 
-                // Création de l'image
-                let image = new Image();
-                image.src = work.imageUrl;
+                    // Création de l'image
+                    let image = new Image();
+                    image.src = work.imageUrl;
 
-                // Création du bouton de suppression avec le SVG uniquement
-                const deleteButton = document.createElement('button');
-                deleteButton.setAttribute("id", "delete-button");
-                deleteButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="9" height="11" viewBox="0 0 9 11" fill="none" class="svg-image-button">
+                    // Création du bouton de suppression avec le SVG uniquement
+                    const deleteButton = document.createElement('button');
+                    deleteButton.setAttribute("id", "delete-button");
+                    deleteButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="9" height="11" viewBox="0 0 9 11" fill="none" class="svg-image-button">
                     <path d="M2.71607 0.35558C2.82455 0.136607 3.04754 0 3.29063 0H5.70938C5.95246 0 6.17545 0.136607 6.28393 0.35558L6.42857 0.642857H8.35714C8.71272 0.642857 9 0.930134 9 1.28571C9 1.64129 8.71272 1.92857 8.35714 1.92857H0.642857C0.287277 1.92857 0 1.64129 0 1.28571C0 0.930134 0.287277 0.642857 0.642857 0.642857H2.57143L2.71607 0.35558ZM0.642857 2.57143H8.35714V9C8.35714 9.70915 7.78058 10.2857 7.07143 10.2857H1.92857C1.21942 10.2857 0.642857 9.70915 0.642857 9V2.57143ZM2.57143 3.85714C2.39464 3.85714 2.25 4.00179 2.25 4.17857V8.67857C2.25 8.85536 2.39464 9 2.57143 9C2.74821 9 2.89286 8.85536 2.89286 8.67857V4.17857C2.89286 4.00179 2.74821 3.85714 2.57143 3.85714ZM4.5 3.85714C4.32321 3.85714 4.17857 4.00179 4.17857 4.17857V8.67857C4.17857 8.85536 4.32321 9 4.5 9C4.67679 9 4.82143 8.85536 4.82143 8.67857V4.17857C4.82143 4.00179 4.67679 3.85714 4.5 3.85714ZM6.42857 3.85714C6.25179 3.85714 6.10714 4.00179 6.10714 4.17857V8.67857C6.10714 8.85536 6.25179 9 6.42857 9C6.60536 9 6.75 8.85536 6.75 8.67857V4.17857C6.75 4.00179 6.60536 3.85714 6.42857 3.85714Z" fill="white"/>
                 </svg>`;
-                deleteButton.className = 'delete-image-button';
-                deleteButton.dataset.imageId = work.id;
+                    deleteButton.className = 'delete-image-button';
+                    deleteButton.dataset.imageId = work.id;
 
-                // Ajout des éléments à la figure
-                figure.appendChild(image);
-                figure.appendChild(deleteButton);
+                    // Ajout des éléments à la figure
+                    figure.appendChild(image);
+                    figure.appendChild(deleteButton);
 
-                // Ajout de la figure à la modal
-                worksModalContainer.appendChild(figure);
-            }
-        })
-        .then(() => {
-            // Ajout d'un écouteur pour le clic sur les boutons de suppression
-            worksModalContainer.addEventListener('click', function(event) {
-                console.log(event.target)
-                if (event.target.closest('.delete-image-button')) {
-                    const imageId = event.target.closest('.delete-image-button').dataset.imageId;
-                    deleteImage(imageId);
+                    // Ajout de la figure à la modal
+                    worksModalContainer.appendChild(figure);
                 }
+            })
+            .then(() => {
+                // Ajout d'un écouteur pour le clic sur les boutons de suppression
+                worksModalContainer.addEventListener('click', function (event) {
+                    if (event.target.closest('.delete-image-button')) {
+                        const imageId = event.target.closest('.delete-image-button').dataset.imageId;
+                        deleteImage(imageId);
+                    }
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching images:', error);
             });
-        })
-        .catch(error => {
-            console.error('Error fetching images:', error);
-        });
     }
 
     // Fonction pour supprimer une image
     function deleteImage(imageId) {
-        console.log(imageId)
         const token = localStorage.getItem('token');
         fetch(`http://localhost:5678/api/works/${imageId}`, {
             method: 'DELETE',
@@ -154,35 +156,35 @@ document.addEventListener("DOMContentLoaded", function() {
                 'Authorization': `Bearer ${token}`
             }
         })
-        .then(response => {
-            if (response.ok) {
-                // Si la suppression est réussie, rafraîchir la modal pour refléter les changements
-                displayModal(worksModalContainer);
-            } else {
-                throw new Error('Failed to delete image');
-            }
-        })
-        .catch(error => {
-            console.error('Error deleting image:', error);
-        });
+            .then(response => {
+                if (response.ok) {
+                    // Si la suppression est réussie, rafraîchir la modal pour refléter les changements
+                    displayModal(worksModalContainer);
+                } else {
+                    throw new Error('Failed to delete image');
+                }
+            })
+            .catch(error => {
+                console.error('Error deleting image:', error);
+            });
     }
 
     // Ajout d'un écouteur pour le clic sur la flèche de retour
-    backArrow.addEventListener('click', function() {
+    backArrow.addEventListener('click', function () {
         modal.style.display = "block";
         modalPhoto.style.display = "none";
     });
 
     // Ajout d'un écouteur pour le clic sur le bouton de modification
-    btn.onclick = function() {
+    btn.onclick = function () {
         modal.style.display = "block";
         displayModal(worksModalContainer);
     }
 
     // Ajout d'un écouteur pour le clic sur le bouton d'ajout de photo
-    btnAddPhoto.onclick = function() {
+    btnAddPhoto.onclick = function () {
         modal.style.display = "none";
-        modalPhoto.style.display = "block";  
+        modalPhoto.style.display = "block";
 
         // Récupération des catégories depuis l'API
         fetch('http://localhost:5678/api/categories', {
@@ -191,23 +193,23 @@ document.addEventListener("DOMContentLoaded", function() {
                 'Accept': 'application/json',
             }
         })
-        .then(response => response.json())
-        .then(categories => {
-            const categorySelect = document.getElementById('categorySelect');
-            categorySelect.innerHTML = '';
-            var defaultOption = document.createElement('option');
-            defaultOption.value = "";
-            categorySelect.appendChild(defaultOption);
-            categories.forEach(category => {
-                var option = document.createElement('option');
-                option.value = category.id;
-                option.textContent = category.name;
-                categorySelect.appendChild(option);
+            .then(response => response.json())
+            .then(categories => {
+                const categorySelect = document.getElementById('categorySelect');
+                categorySelect.innerHTML = '';
+                var defaultOption = document.createElement('option');
+                defaultOption.value = "";
+                categorySelect.appendChild(defaultOption);
+                categories.forEach(category => {
+                    var option = document.createElement('option');
+                    option.value = category.id;
+                    option.textContent = category.name;
+                    categorySelect.appendChild(option);
+                });
+            })
+            .catch(error => {
+                console.error('Erreur lors de la récupération des catégories :', error);
             });
-        })
-        .catch(error => {
-            console.error('Erreur lors de la récupération des catégories :', error);
-        });
     }
 
     function changeButtonClass() {
@@ -216,9 +218,9 @@ document.addEventListener("DOMContentLoaded", function() {
         validationPhoto.disabled = false;
     }
     // Ajout d'un écouteur pour le clic sur le bouton d'upload de photo
-    uploadPhoto.onclick = function(event) {
+    uploadPhoto.onclick = function (event) {
         var photoInput = document.getElementById("photo-input");
-        photoInput.onchange = function(event) {            
+        photoInput.onchange = function (event) {
             // Affiche l'image
             affichagePhoto.appendChild(uploadImage)
             uploadImage.src = URL.createObjectURL(event.target.files[0]);
@@ -229,11 +231,11 @@ document.addEventListener("DOMContentLoaded", function() {
             changeButtonClass();
 
         };
-        
+
         photoInput.click();
     }
 
-    submitPhoto.onclick = function(event) {
+    submitPhoto.onclick = function (event) {
         const file = document.getElementById("photo-input").files[0];
         const category = document.getElementById("categorySelect").value;
         const title = document.getElementById("imageName").value;
@@ -242,32 +244,32 @@ document.addEventListener("DOMContentLoaded", function() {
         var token = localStorage.getItem("token");
         const formData = new FormData();
         formData.append('image', file);
-        formData.append('title', title); 
-        formData.append('category', category); 
+        formData.append('title', title);
+        formData.append('category', category);
         // Maintenant vous pouvez effectuer votre appel fetch pour envoyer la photo
         fetch('http://localhost:5678/api/works', {
             method: 'POST',
-            headers: {'Authorization': 'Bearer ' + token},
+            headers: { 'Authorization': 'Bearer ' + token },
             body: formData
         })
-        .then(response => {
-            // Gérer la réponse de l'API
-            if (response.ok) {
-                displayModal(worksModalContainer);
-                // La requête a réussi, vous pouvez traiter la réponse ici
-            } else {
-                // La requête a échoué, gérer l'erreur ici
-                throw new Error('Échec de la requête POST');
-            }
-        })
-        .catch(error => {
-            // Gérer les erreurs
-            console.error('Erreur lors de l\'envoi de la photo:', error);
-        });
+            .then(response => {
+                // Gérer la réponse de l'API
+                if (response.ok) {
+                    displayModal(worksModalContainer);
+                    // La requête a réussi, vous pouvez traiter la réponse ici
+                } else {
+                    // La requête a échoué, gérer l'erreur ici
+                    throw new Error('Échec de la requête POST');
+                }
+            })
+            .catch(error => {
+                // Gérer les erreurs
+                console.error('Erreur lors de l\'envoi de la photo:', error);
+            });
     }
 
     // Ajout d'un écouteur pour le clic en dehors de la modal
-    window.onclick = function(event) {
+    window.onclick = function (event) {
         if (event.target == modal) {
             modal.style.display = "none";
         }

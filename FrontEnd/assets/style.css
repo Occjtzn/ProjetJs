@@ -410,7 +410,7 @@ footer nav ul {
     grid-row-gap: 25px;
     margin: 0 105px 80px 105px;
     overflow-y: scroll;
-	max-height: 320px;
+	height: 320px;
 
 }
 .modal-figure {

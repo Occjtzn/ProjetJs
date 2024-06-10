@@ -1,49 +1,50 @@
-document.addEventListener("DOMContentLoaded", function() {
+// Ajout d'un écouteur d'événement pour exécuter le script lorsque le DOM est complètement chargé
+document.addEventListener("DOMContentLoaded", function () {
+    const loginUrl = 'http://localhost:5678/api/users/login';
+
+    // Sélection du formulaire de connexion
     const loginForm = document.getElementById('login');
 
-    loginForm.addEventListener('submit', function(event) {
-        event.preventDefault();
+    // Ajout d'un écouteur d'événement pour le formulaire de connexion lors de la soumission
+    loginForm.addEventListener('submit', function (event) {
+        event.preventDefault(); // Empêche le rechargement de la page lors de la soumission du formulaire
 
-        const email = document.querySelector('.email').value;
-        const password = document.querySelector('.motDePasse').value;
+        // Récupération des valeurs des champs de saisie
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('motDePasse').value;
 
-        fetch('http://localhost:5678/api/users/login', {
+        // Envoi d'une requête POST à l'API pour tenter de se connecter
+        fetch(loginUrl, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json' // Définition du type de contenu comme JSON
             },
-            body: JSON.stringify({ email: email, password: password })
+            body: JSON.stringify({ email: email, password: password }) // Conversion des données en JSON
         })
         .then(response => {
-
             if (!response.ok) {
-                console.log(response)
-                if (response.status === 401) {
-                        alert('Vos identifiants sont erronés');
-                    } else if (response.status === 404) {
-                        alert("L'ulilisateur n'existe pas");
-                    }
+                // Gestion des erreurs de réponse
+                if (response.status === 404) {
+                    alert("L'utilisateur n'existe pas");
+                }
             }
-            
-            return response.json();
-
+            return response.json(); // Conversion de la réponse en JSON
         })
-
         .then(data => {
-
-            if (data.token && data.userId)  {
+            // Vérification si le token et l'userId sont présents dans la réponse
+            if (data.token && data.userId) {
+                // Stockage du token et de l'userId dans le localStorage
                 localStorage.setItem("token", data.token);
-                localStorage.setItem("userId", data.userId)
+                localStorage.setItem("userId", data.userId);
 
-                window.location.href = "./index.html"
-        }
-        
+                // Redirection vers la page d'accueil
+                window.location.href = "./index.html";
+            }
         })
         .catch(error => {
-            if (error.response) {
-                    alert('Erreur de connexion');
-                    console.error('Erreur lors de la connexion :', error);
-            }
+            // Gestion des erreurs lors de la requête
+            alert('Erreur de connexion');
+            console.error('Erreur lors de la connexion :', error);
         });
     });
 });
